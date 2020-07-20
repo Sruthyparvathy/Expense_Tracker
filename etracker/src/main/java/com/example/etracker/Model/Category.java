@@ -8,6 +8,8 @@ public class Category {
 BigInteger id;
 int transactionType;
 String categoryName;
+BigInteger userId;
+
 public BigInteger getId() {
 	return id;
 }
@@ -26,9 +28,17 @@ public String getCategoryName() {
 public void setCategoryName(String categoryName) {
 	this.categoryName = categoryName;
 }
-
-
-
-
+public BigInteger getUserId() {
+	return userId;
+}
+public void setUserId(BigInteger userId) {
+	this.userId = userId;
+}
 
 }
+
+
+
+
+
+

@@ -1,6 +1,8 @@
 package com.example.etracker.Service;
 
+import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +14,10 @@ public interface Etracker_Service {
 	public Map<String, java.lang.Object> graph2(int userId);
 	public Collection<Map<String,java.lang.Object>>  graph3(int userId);
 	public Collection<Map<String,java.lang.Object>> graph4(int userId);
-	public void addincome(int userId, String item, int categoryId, double amount, String transactionDate);
-	public void addexpense(int userId, String item, int categoryId, double amount, String transactionDate);
-	public void addincomecategory(  String categoryName);
-	public void addexpensecategory( String categoryName);
+	public int addincome(BigInteger userId, String item, BigInteger categoryId, double amount,Date transactionDate);
+	public int addexpense(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate);
+	public int addincomecategory(  String categoryName,BigInteger userId);
+	public int addexpensecategory( String categoryName,BigInteger userId);
 
 	public List<Map<String, Object>> monthlycategorysum(int userId);
 	public List<Map<String, Object>> yearlycategorysum(int userId);
@@ -31,7 +33,7 @@ public interface Etracker_Service {
 
 	public int addUser(long l, String name, String emailId, String password );
 	
-	public List<Map<String, Object>> liscategoryexpense();
-	public List<Map<String, Object>> liscategoryincome();
+	public List<Map<String, Object>> liscategoryexpense(int userId);
+	public List<Map<String, Object>> liscategoryincome(int userId);
 	
 }

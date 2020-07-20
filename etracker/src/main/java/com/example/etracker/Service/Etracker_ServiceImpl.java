@@ -1,8 +1,10 @@
 package com.example.etracker.Service;
 
 
-import java.util.Collection;
+import java.math.BigInteger;
 
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,21 +35,23 @@ public class Etracker_ServiceImpl implements Etracker_Service{
 		return epTrackDao.graph4(userId);
 	}
 	
-	public void addincome(int userId, String item, int categoryId, double amount, String transactionDate) {
-			epTrackDao.addincome(userId,item,categoryId,amount,transactionDate);
+	public int addincome(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate) {
+			return epTrackDao.addincome(userId,item,categoryId,amount,transactionDate);
 		
 	}
-	public void addexpense(int userId, String item, int categoryId, double amount, String transactionDate) {
-		    epTrackDao.addexpense(userId,item,categoryId,amount,transactionDate);
+	
+
+	public int addexpense(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate) {
+		  return  epTrackDao.addexpense(userId,item,categoryId,amount,transactionDate);
 	
 	}
 	
-	public void addincomecategory( String categoryName) {
-		    epTrackDao.addincomecategory(categoryName);
+	public int addincomecategory( String categoryName,BigInteger userId) {
+		   return  epTrackDao.addincomecategory(categoryName,userId);
 	 
     }
-    public void addexpensecategory(String categoryName) {
-	        epTrackDao.addexpensecategory(categoryName);
+    public int addexpensecategory(String categoryName,BigInteger userId) {
+	     return epTrackDao.addexpensecategory(categoryName,userId);
 
     }
 
@@ -85,13 +89,13 @@ public class Etracker_ServiceImpl implements Etracker_Service{
 		return epTrackDao.resetPassword(emailId,password);
 	}
 	@Override
-	public List<Map<String, Object>> liscategoryexpense() {
-		return epTrackDao.liscategoryexpense();
+	public List<Map<String, Object>> liscategoryexpense(int userId) {
+		return epTrackDao.liscategoryexpense(userId);
 
 	}
 	@Override
-	public List<Map<String, Object>> liscategoryincome() {
-		return epTrackDao.liscategoryincome();
+	public List<Map<String, Object>> liscategoryincome(int userId) {
+		return epTrackDao.liscategoryincome(userId);
 
 	}
 	

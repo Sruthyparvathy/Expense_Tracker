@@ -3,12 +3,8 @@ package com.example.etracker.Controller;
 
 
 import java.util.Collection;
-
-
-
 import java.util.List;
 import java.util.Map;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.etracker.Model.Category;
+import com.example.etracker.Model.Transaction;
 import com.example.etracker.Model.User;
 import com.example.etracker.Service.Etracker_Service;
 import com.example.etracker.utils.PathRoutes;
@@ -27,6 +26,8 @@ import com.example.etracker.utils.PathRoutes;
 @RestController
 @RequestMapping(PathRoutes.SearchSQL.SEARCHSQL_ROOT)
 public class Etracker_Controller {
+	
+	
 	
 	@Autowired
 	private Etracker_Service exp;
@@ -52,37 +53,45 @@ public class Etracker_Controller {
 
 	
 	@PostMapping(PathRoutes.SearchSQL.ADD_INCOME)
-	 public void addincome(@RequestParam int userId,@RequestParam String item,@RequestParam int categoryId,@RequestParam double amount,@RequestParam String transactionDate ) {
-	 exp.addincome(userId,item,categoryId,amount,transactionDate);
+	 public int addincome(@RequestBody Transaction income) {
+	 exp.addincome(income.getUserId(),income.getItem(),income.getCategoryId(),income.getAmount(),income.getTransactionDate());
+	 return 1;
 	 }
 	@PostMapping(PathRoutes.SearchSQL.ADD_EXPENSE)
-	 public void addexpense(@RequestParam int userId,@RequestParam String item,@RequestParam int categoryId,@RequestParam double amount,@RequestParam String transactionDate ) {
-	 exp.addexpense(userId,item,categoryId,amount,transactionDate);
+	 public int addexpense(@RequestBody  Transaction expense ) {
+	 exp.addexpense(expense.getUserId(),expense.getItem(),expense.getCategoryId(),expense.getAmount(),expense.getTransactionDate());
+	 return 1;
 	 }
 	
-	@PostMapping(PathRoutes.SearchSQL.ADD_INCOME_CATEGORY)
-	 public void addincomecategory(@RequestParam String categoryName ) {
-	 exp.addincomecategory(categoryName);
-	 }
 	@PostMapping(PathRoutes.SearchSQL.ADD_EXPENSE_CATEGORY)
-	 public void addexpensecategory(@RequestParam String categoryName ) {
-	 exp.addexpensecategory(categoryName);
+	 public int addexpensecategory(@RequestBody Category category ) {
+	 exp.addexpensecategory(category.getCategoryName(),category.getUserId());
+	 return 1;
 	 }
-	
-	
+	@PostMapping(PathRoutes.SearchSQL.ADD_INCOME_CATEGORY)
+	 public int addincomecategory(@RequestBody Category category ) {
+	 exp.addincomecategory(category.getCategoryName(),category.getUserId());
+	return 1;
+	 }
+	@PostMapping
+	public int addUser(@RequestBody User user ) {
+		 exp.addUser(user.getId(),user.getName(),user.getEmailId(),user.getPassword());
+			
+return 1;	
+	}
 	
 	
 	
 	
 	@GetMapping(PathRoutes.SearchSQL.LIST_CATEGORY_EXPENSE)
-	public List<Map<String, Object>> liscategoryexpense()
+	public List<Map<String, Object>> liscategoryexpense(@RequestParam int userId)
 	{
-		return exp.liscategoryexpense();
+		return exp.liscategoryexpense(userId);
 	}
 	@GetMapping(PathRoutes.SearchSQL.LIST_CATEGORY_INCOME)
-	public List<Map<String, Object>> liscategoryincome()
+	public List<Map<String, Object>> liscategoryincome(@RequestParam int userId)
 	{
-		return exp.liscategoryincome();
+		return exp.liscategoryincome(userId);
 	}
 	@GetMapping(PathRoutes.SearchSQL.CATEGORY_BAR_MONTH)
 	public List<Map<String, Object>> monthlycategorysum(@RequestParam int userId)
@@ -111,14 +120,7 @@ public class Etracker_Controller {
 		return exp.getIncomeExpense(userId);
 	}
 
-	@PostMapping
-	public int addUser(@RequestBody User user ) {
-		 exp.addUser(user.getId(),user.getName(),user.getEmailId(),user.getPassword());
-			
-return 1;
-		
-		
-	}
+	
 	@GetMapping(PathRoutes.SearchSQL.GET_EMAIL_PASSWORD)
 	public List<User> getUser(@PathVariable String emailId,@PathVariable String password) {
 		return exp.getUser(emailId,password);

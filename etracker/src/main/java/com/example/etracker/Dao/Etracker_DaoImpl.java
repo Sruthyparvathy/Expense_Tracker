@@ -1,13 +1,14 @@
 package com.example.etracker.Dao;
 
 
+import java.math.BigInteger;
+
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
-import java.sql.Types;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,28 +53,30 @@ public class Etracker_DaoImpl implements Etracker_Dao {
 		return jdbcTemplate.queryForList(Sql.MetadataSql.TOTAL_LINE_MONTH,userId);
 	}
 
-	public void addincome(int userId, String item, int categoryId, double amount, String transactionDate) {
-
-		 jdbcTemplate.update(Sql.MetadataSql.ADDINCOME,userId,  item,  categoryId,  amount,transactionDate);
-		
+	public int addincome(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate) {
+		String sql = Sql.MetadataSql.ADDINCOME;
+		 jdbcTemplate.update(sql,userId,  item,  categoryId,  amount,transactionDate);
+		return 1;
 	}
-	public void addexpense(int userId, String item, int categoryId, double amount, String transactionDate) {
-
-		 jdbcTemplate.update(Sql.MetadataSql.ADDEXPENSE,userId,item,categoryId,amount,transactionDate);
-		
-	}
-	
-	public void addincomecategory( String categoryName) {
-
-		 jdbcTemplate.update(Sql.MetadataSql.ADDINCOMECATEGORY, categoryName);
-		
+	public int addexpense(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate) {
+		String sql = Sql.MetadataSql.ADDEXPENSE;
+		 jdbcTemplate.update(sql,userId,item,categoryId,amount,transactionDate);
+		return 1;
 	}
 	
-	public void addexpensecategory( String categoryName) {
 
-		 jdbcTemplate.update(Sql.MetadataSql.ADDEXPENSECATEGORY, categoryName);
-		
+	public int addincomecategory( String categoryName, BigInteger userId) {
+
+		 String sql = Sql.MetadataSql.ADDINCOMECATEGORY;
+		 jdbcTemplate.update(sql, categoryName,userId);
+		 return 1;
 	}
+	public int addexpensecategory( String categoryName, BigInteger userId) {
+		String sql = Sql.MetadataSql.ADDEXPENSECATEGORY;
+		 jdbcTemplate.update(sql, categoryName,userId);
+		return 1; 
+	}
+
 	
 
 	public List<Map<String, Object>> monthlycategorysum(int userId) {
@@ -104,6 +107,20 @@ public class Etracker_DaoImpl implements Etracker_Dao {
 		return jdbcTemplate.queryForList(Sql.MetadataSql.FETCH_INCOME_EXPENSE, userId);
 	}
 	
+	
+	public List<Map<String, Object>> liscategoryexpense(int userId) {
+		String sql = Sql.MetadataSql.LIST_CATEGORY_EXPENSE;
+		return jdbcTemplate.queryForList(sql,userId);
+
+	}
+
+	
+	public List<Map<String, Object>> liscategoryincome(int userId) {
+		String sql = Sql.MetadataSql.LIST_CATEGORY_INCOME;
+		return jdbcTemplate.queryForList(sql,userId);
+
+	}
+
 
 	@Override
 	public int addUser(long id, String name, String emailId, String password ) {
@@ -115,10 +132,8 @@ public class Etracker_DaoImpl implements Etracker_Dao {
 		String pass=passwordAuthentication.hash(ch);
 		
 		String sql= Sql.MetadataSql.ADD_USER;
-		int update = jdbcTemplate.update(sql,emailId,name,pass);
-		
+		jdbcTemplate.update(sql,emailId,name,pass);
 		return 1;
-		
 	}
 
 
@@ -178,20 +193,6 @@ public class Etracker_DaoImpl implements Etracker_Dao {
 	return jdbcTemplate.update(updateSql,inputs);
 	}
 
-	@Override
-	public List<Map<String, Object>> liscategoryexpense() {
-		String sql = Sql.MetadataSql.LIST_CATEGORY_EXPENSE;
-		return jdbcTemplate.queryForList(sql);
-
-	}
-
-	@Override
-	public List<Map<String, Object>> liscategoryincome() {
-		String sql = Sql.MetadataSql.LIST_CATEGORY_INCOME;
-		return jdbcTemplate.queryForList(sql);
-
-	}
-}
 
 
 class RegisterMapper implements RowMapper<User>{
@@ -203,5 +204,5 @@ class RegisterMapper implements RowMapper<User>{
 		return register;
 	}
 
-
+}
 }
