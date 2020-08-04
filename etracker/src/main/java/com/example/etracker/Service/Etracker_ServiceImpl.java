@@ -3,6 +3,7 @@ package com.example.etracker.Service;
 
 import java.math.BigInteger;
 
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -21,18 +22,18 @@ public class Etracker_ServiceImpl implements Etracker_Service{
 	@Autowired
 	Etracker_Dao epTrackDao;
 	
-	public Map<String, java.lang.Object> graph1(int userId){
-		return epTrackDao.graph1(userId);
+	public Map<String, java.lang.Object> graph1(int YEAR,int userId){
+		return epTrackDao.graph1(YEAR,userId);
 	}
-	public Map<String, java.lang.Object> graph2(int userId){
-		return epTrackDao.graph2(userId);
+	public Map<String, java.lang.Object> graph2(int year, String month, int userId){
+		return epTrackDao.graph2(year, month,userId);
 	}
-	public Collection<Map<String,java.lang.Object>>  graph3(int userId){
-		return epTrackDao.graph3(userId);
+	public Collection<Map<String,java.lang.Object>>  graph3(int YEAR, int userId){
+		return epTrackDao.graph3(YEAR, userId);
 	}
 	
-	public Collection<Map<String,java.lang.Object>> graph4(int userId){
-		return epTrackDao.graph4(userId);
+	public Collection<Map<String,java.lang.Object>> graph4(String month, int year, int userId){
+		return epTrackDao.graph4(month,year,userId);
 	}
 	
 	public int addincome(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate) {
@@ -55,12 +56,12 @@ public class Etracker_ServiceImpl implements Etracker_Service{
 
     }
 
-	public List<Map<String, Object>> monthlycategorysum(int userId) {
-		return epTrackDao.monthlycategorysum(userId);
+	public List<Map<String, Object>> monthlycategorysum(int userId, String month, int year) {
+		return epTrackDao.monthlycategorysum(userId, month, year);
 	}
 
-	public List<Map<String, Object>> yearlycategorysum(int userId) {
-		return epTrackDao.yearlycategorysum(userId);
+	public List<Map<String, Object>> yearlycategorysum(int userId,int YEAR) {
+		return epTrackDao.yearlycategorysum(userId, YEAR);
 	}
 	
 	public Collection<Map<String, Object>> getIncome(int userId) {

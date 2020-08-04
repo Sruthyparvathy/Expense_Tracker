@@ -1,6 +1,7 @@
 package com.example.etracker.Dao;
 
 import java.math.BigInteger;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -10,16 +11,16 @@ import com.example.etracker.Model.User;
 
 public interface Etracker_Dao {
   
-  public Map<String, java.lang.Object> graph1(int userId);
-	public Map<String, java.lang.Object> graph2(int userId);
-	public Collection<Map<String,java.lang.Object>>  graph3(int userId);
-	public Collection<Map<String,java.lang.Object>> graph4(int userId);
+  public Map<String, java.lang.Object> graph1(int YEAR,int userId);
+	public Map<String, java.lang.Object> graph2(int year, String month,int userId);
+	public Collection<Map<String,java.lang.Object>>  graph3(int YEAR,int userId);
+	public Collection<Map<String,java.lang.Object>> graph4( String month,int year,int userId);
 	public int addincome(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate);
 	public int addexpense(BigInteger userId, String item, BigInteger categoryId, double amount, Date transactionDate);
 	public int addincomecategory(String categoryName,BigInteger userId);
 	public int addexpensecategory(String categoryName,BigInteger userId);
-	public List<Map<String, Object>> monthlycategorysum(int userId);
-	public List<Map<String, Object>> yearlycategorysum(int userId);
+	public List<Map<String, Object>> monthlycategorysum(int year, String month,int userId);
+	public List<Map<String, Object>> yearlycategorysum(int YEAR,int userId);
 
 	public Collection<Map<String,Object>> getIncome(int userId);
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,21 +34,21 @@ public class Etracker_Controller {
 	private Etracker_Service exp;
 	
 	@GetMapping(PathRoutes.SearchSQL.TOTAL_BAR_YEAR)
-	public Map<String, java.lang.Object> graph1(@RequestParam int userId ){
-		return exp.graph1(userId);
+	public Map<String, java.lang.Object> graph1(@RequestParam int YEAR, @RequestParam int userId ){
+		return exp.graph1(YEAR,userId);
 	}
 	
 	@GetMapping(PathRoutes.SearchSQL.TOTAL_BAR_MONTH)
-	public Map<String, java.lang.Object> graph2(@RequestParam int userId ){
-		return exp.graph2(userId);
+	public Map<String, java.lang.Object> graph2(@RequestParam int year, @RequestParam String month,@RequestParam int userId ){
+		return exp.graph2(year,month,userId);
 	}
 	@GetMapping(PathRoutes.SearchSQL.TOTAL_LINE_YEAR)
-	public Collection<Map<String,java.lang.Object>>  graph3(@RequestParam int userId ){
-		return exp.graph3(userId);
+	public Collection<Map<String,java.lang.Object>>  graph3(@RequestParam int YEAR,@RequestParam int userId ){
+		return exp.graph3(YEAR,userId);
 	}
 	@GetMapping(PathRoutes.SearchSQL.TOTAL_LINE_MONTH)
-	public Collection<Map<String,java.lang.Object>> graph4(@RequestParam int userId ){
-		return exp.graph4(userId);
+	public Collection<Map<String,java.lang.Object>> graph4( @RequestParam String month,@RequestParam int year,@RequestParam int userId ){
+		return exp.graph4(month,year,userId);
 	}
 
 
@@ -75,9 +76,13 @@ public class Etracker_Controller {
 	 }
 	@PostMapping
 	public int addUser(@RequestBody User user ) {
-		 exp.addUser(user.getId(),user.getName(),user.getEmailId(),user.getPassword());
-			
-return 1;	
+		try {int status = exp.addUser(user.getId(),user.getName(),user.getEmailId(),user.getPassword());
+			return status;}	
+catch(DataIntegrityViolationException e) {
+	return 2;}
+catch (Exception e) {
+	return 0;
+}
 	}
 	
 	
@@ -94,14 +99,14 @@ return 1;
 		return exp.liscategoryincome(userId);
 	}
 	@GetMapping(PathRoutes.SearchSQL.CATEGORY_BAR_MONTH)
-	public List<Map<String, Object>> monthlycategorysum(@RequestParam int userId)
+	public List<Map<String, Object>> monthlycategorysum( @RequestParam int userId, @RequestParam String month,@RequestParam int year )
 	{
-		return exp.monthlycategorysum(userId);
+		return exp.monthlycategorysum(userId,month,year);
 	}
 	@GetMapping(PathRoutes.SearchSQL.CATEGORY_BAR_YEAR)
-	public List<Map<String, Object>> yearlycategorysum(@RequestParam int userId)
+	public List<Map<String, Object>> yearlycategorysum( @RequestParam int userId, @RequestParam int YEAR)
 	{
-		return exp.yearlycategorysum(userId);
+		return exp.yearlycategorysum(userId,YEAR);
 	}
 	
 	@GetMapping(PathRoutes.SearchSQL.GET_INCOME)
